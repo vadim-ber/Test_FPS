@@ -1,7 +1,6 @@
 using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 
 public class Aim : MonoBehaviour
@@ -17,6 +16,7 @@ public class Aim : MonoBehaviour
     [SerializeField] private Transform _aimTarget;
     [SerializeField] private Transform _crossTarget;
     [SerializeField] private List<Weapon> _weapons;
+    [SerializeField] private AudioSource _playSound;
     private InputAction _aimAction;
     private InputAction _fireAction;
     private InputAction _weapon1Action;
@@ -28,10 +28,17 @@ public class Aim : MonoBehaviour
     private Weapon _activeWeapon;
     private Transform _activeWeaponModel;
     private bool _aimModeOn;
+    private float _fireTime = 0;
+    private float _fireTimer;
+    
 
     public Weapon ActiveWeapon
     {
         get => _activeWeapon;
+    }
+    public Transform ActiveWeaponModel
+    {
+        get => _activeWeaponModel;
     }
     public bool AimModeOn
     {
@@ -41,6 +48,10 @@ public class Aim : MonoBehaviour
     {
         get => _player;
     }
+    public AudioSource PlaySound
+    {
+        get => _playSound;
+    }
 
     private void Start()
     {
@@ -49,10 +60,19 @@ public class Aim : MonoBehaviour
 
     private void Update()
     {
-        Vector3 hitPoint = GetRayHitPoint();
-        _fire.SingleShoot(_hitTransform, hitPoint, _bloodVFX, _explosionVFX);
+        Vector3 hitPoint = GetRayHitPoint();        
         HandleAimAction(hitPoint);
         SwitchWeapon();
+        _fireTimer += Time.deltaTime;
+        if(_fireTimer > _fireTime)
+        {
+            _fire.Shoot(_hitTransform, hitPoint, _bloodVFX, _explosionVFX);
+        }
+    }
+
+    public void SetFireTimer(float value)
+    {
+        _fireTimer = value;
     }
 
     private void Initialize()
@@ -70,6 +90,10 @@ public class Aim : MonoBehaviour
         _weapon3Action.Enable();
         _fire = new(this, _fireAction);
         SwitchToWeapon(0);
+        foreach(var weapon in _weapons)
+        {
+            weapon.Initialize();
+        }
     }
     private void SwitchWeapon()
     {
@@ -103,7 +127,9 @@ public class Aim : MonoBehaviour
         }
 
         _activeWeapon = _weapons[weaponIndex];
-        _activeWeaponModel = _activeWeapon.Initialize(_handSlot);
+        _activeWeaponModel = _activeWeapon.Create(_handSlot);
+        _fireTime = _activeWeapon.ShotsPerSecond;
+        _fireTimer = _fireTime;
     }
 
     private Vector3 GetRayHitPoint()

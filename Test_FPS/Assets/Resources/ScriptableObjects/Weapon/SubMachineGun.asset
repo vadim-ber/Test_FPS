@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: 
   _WeaponPrefab: {fileID: 4125343144372069631, guid: 0f88f026370301d4f8cee4fef8cd6aff, type: 3}
+  _shootVFX: {fileID: 4502835693877224, guid: c2cc306486db2a6468d649a504db98db, type: 3}
   _scaleMultipler: 1
   _animationLayer: 3
-  _maxBulletsNumber: 0
-  _hpDamagePerShot: 0
-  _shotsPerSecond: 1
-  _shootSound: {fileID: 0}
+  _maxBulletsNumber: 150
+  _hpDamagePerShot: 8
+  _secondsBetweenShots: 0.3
+  _recoil: 0.25
+  _shootSound: {fileID: 8300000, guid: 44efb8bd3f71ca8459cc9b548cb29f7b, type: 3}

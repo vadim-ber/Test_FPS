@@ -196,6 +196,10 @@ public class Player : MonoBehaviour
 
             if (_jumpAction.triggered && _jumpTimeoutDelta <= 0.0f)
             {
+                if (!_rotateOnMove)
+                {
+                    return;
+                }
                 _verticalVelocity = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
 
                 _animator.SetBool(_animIDJump, true);
