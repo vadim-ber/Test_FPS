@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
 
     public void SetRotateOnMove(bool newRotate)
     {
-        _rotateOnMove |= newRotate;
+        _rotateOnMove = newRotate;
     }
 
     private void Awake()
@@ -167,15 +167,10 @@ public class Player : MonoBehaviour
         if (_animationBlend < 0.01f) _animationBlend = 0f;
         Vector3 inputDirection = new Vector3(moveInput.x, 0.0f, moveInput.y).normalized;
 
-        if (moveInput != Vector2.zero)
+        if (moveInput != Vector2.zero && _rotateOnMove)
         {
             _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg + _mainCamera.transform.eulerAngles.y;
             float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity, _rotationSmoothTime);
-
-            if(!_rotateOnMove)
-            {
-                return;
-            }
             transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
         }
 

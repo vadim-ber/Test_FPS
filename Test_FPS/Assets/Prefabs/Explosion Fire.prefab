@@ -4752,6 +4752,7 @@ GameObject:
   - component: {fileID: 417761080263594748}
   - component: {fileID: 417761080263594739}
   - component: {fileID: 417761080263594738}
+  - component: {fileID: 1896868636166868200}
   m_Layer: 0
   m_Name: Explosion Fire
   m_TagString: Untagged
@@ -9547,6 +9548,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1896868636166868200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417761080263594737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6a8e00311ed8342817f226663f863e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tenporaryParticle: {fileID: 417761080263594739}
 --- !u!1 &417761080798259113
 GameObject:
   m_ObjectHideFlags: 0

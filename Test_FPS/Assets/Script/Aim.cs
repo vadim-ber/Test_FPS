@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 
 public class Aim : MonoBehaviour
@@ -13,6 +14,8 @@ public class Aim : MonoBehaviour
     [SerializeField] private Transform _bloodVFX;
     [SerializeField] private Transform _explosionVFX;
     [SerializeField] private Transform _handSlot;
+    [SerializeField] private Transform _aimTarget;
+    [SerializeField] private Transform _crossTarget;
     [SerializeField] private List<Weapon> _weapons;
     private InputAction _aimAction;
     private InputAction _fireAction;
@@ -21,7 +24,7 @@ public class Aim : MonoBehaviour
     private InputAction _weapon3Action;
     private Fire _fire;
     private Transform _hitTransform;
-    private Transform _target;
+    
     private Weapon _activeWeapon;
     private Transform _activeWeaponModel;
     private bool _aimModeOn;
@@ -34,6 +37,10 @@ public class Aim : MonoBehaviour
     {
         get => _aimModeOn;
     }
+    public Player Player
+    {
+        get => _player;
+    }
 
     private void Start()
     {
@@ -42,7 +49,7 @@ public class Aim : MonoBehaviour
 
     private void Update()
     {
-        Vector3 hitPoint = GetHitPoint();
+        Vector3 hitPoint = GetRayHitPoint();
         _fire.SingleShoot(_hitTransform, hitPoint, _bloodVFX, _explosionVFX);
         HandleAimAction(hitPoint);
         SwitchWeapon();
@@ -51,7 +58,6 @@ public class Aim : MonoBehaviour
     private void Initialize()
     {
         Cursor.visible = false;
-        _target = new GameObject("Target").transform;
         _aimAction = _player.InputActionAsset.FindAction("Aim");
         _fireAction = _player.InputActionAsset.FindAction("Fire");
         _weapon1Action = _player.InputActionAsset.FindAction("Weapon1");
@@ -75,14 +81,17 @@ public class Aim : MonoBehaviour
         if (_weapon1Action.triggered)
         {
             SwitchToWeapon(0);
+            _player.Animator.SetLayerWeight(2, 0f);
         }
         else if (_weapon2Action.triggered)
         {
             SwitchToWeapon(1);
+            _player.Animator.SetLayerWeight(2, 1f);
         }
         else if (_weapon3Action.triggered)
         {
             SwitchToWeapon(2);
+            _player.Animator.SetLayerWeight(2, 1f);
         }
     }
 
@@ -97,7 +106,7 @@ public class Aim : MonoBehaviour
         _activeWeaponModel = _activeWeapon.Initialize(_handSlot);
     }
 
-    private Vector3 GetHitPoint()
+    private Vector3 GetRayHitPoint()
     {
         Vector3 hitPoint = Vector3.zero;
         Vector2 screenCenter = new(Screen.width / 2, Screen.height / 2);
@@ -105,7 +114,7 @@ public class Aim : MonoBehaviour
         _hitTransform = null;
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, _aimColliderMask))
         {
-            _target.position = raycastHit.point;
+            _aimTarget.position = raycastHit.point;
             hitPoint = raycastHit.point;
             _hitTransform = raycastHit.transform;
         }
@@ -134,6 +143,7 @@ public class Aim : MonoBehaviour
         _aimCamera.gameObject.SetActive(true);
         _player.SetSensitivity(_aimSensitivity);
         _player.SetRotateOnMove(false);
+        _crossTarget.gameObject.SetActive(true);
 
         Vector3 wolrdAim = hitPoint;
         wolrdAim.y = transform.position.y;
@@ -152,6 +162,7 @@ public class Aim : MonoBehaviour
         }
         _aimModeOn = false; 
         _aimCamera.gameObject.SetActive(false);
+        _crossTarget.gameObject.SetActive(false);
         _player.SetSensitivity(_normalSensitivity);
         _player.SetRotateOnMove(true);
         _player.Animator.SetLayerWeight(_activeWeapon.AnimationLayer, 

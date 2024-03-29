@@ -19,6 +19,7 @@ public class Fire
         }
         if(_action.triggered && hitTransform != null)
         {
+            _aim.Player.Animator.SetTrigger("Hit");
             if (hitTransform.CompareTag("BulletTarget"))
             {
                 GameObject.Instantiate(blood, hitPoint, Quaternion.identity);

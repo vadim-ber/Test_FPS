@@ -7,8 +7,9 @@ public class Weapon : ScriptableObject
     [SerializeField] private Transform _WeaponPrefab;
     [SerializeField] private float _scaleMultipler = 1f;
     [SerializeField] private int _animationLayer;
-    [SerializeField] private int _maxBulletsNumber;
+    [SerializeField] private int _maxBulletsNumber = 30;
     [SerializeField] private int _hpDamagePerShot;
+    [SerializeField] private float _shotsPerSecond = 1f;
     [SerializeField] private AudioClip _shootSound;
 
     public string Name

@@ -15,6 +15,8 @@ MonoBehaviour:
   _name: 
   _WeaponPrefab: {fileID: 8631598122745117777, guid: 220850ab6a997e149ae0d0b424f404d5, type: 3}
   _scaleMultipler: 0.85
-  _animationLayer: 2
+  _animationLayer: 3
   _maxBulletsNumber: 0
   _hpDamagePerShot: 0
+  _shotsPerSecond: 1
+  _shootSound: {fileID: 0}
