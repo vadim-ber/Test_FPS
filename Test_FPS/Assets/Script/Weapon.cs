@@ -6,11 +6,12 @@ public class Weapon : ScriptableObject
     [SerializeField] private string _name;
     [SerializeField] private Transform _WeaponPrefab;
     [SerializeField] private Transform _shootVFX;
-    [SerializeField] private float _scaleMultipler = 1f;
+    [SerializeField] private float _modelScaleMultipler = 1f;
     [SerializeField] private int _animationLayer;
     [SerializeField] private int _maxBulletsNumber = 30;
     [SerializeField] private int _hpDamagePerShot;
     [SerializeField] private float _secondsBetweenShots = 1f;
+    [SerializeField] private int _bulletsPerShot = 1;
     [SerializeField][Range(0, 1)] float _recoil;
     [SerializeField] private AudioClip _shootSound;
 
@@ -52,6 +53,10 @@ public class Weapon : ScriptableObject
     { 
         get => _currentBulletsNumber; 
     }
+    public int BulletsPerShot
+    {
+        get => _bulletsPerShot;
+    }
 
     public void SetBulletNumber(int value)
     {
@@ -75,7 +80,7 @@ public class Weapon : ScriptableObject
     {
         var weapon = GameObject.Instantiate(_WeaponPrefab, slot.position, slot.rotation);
         weapon.SetParent(slot);
-        weapon.localScale = new Vector3(_scaleMultipler, _scaleMultipler, _scaleMultipler);
+        weapon.localScale = new Vector3(_modelScaleMultipler, _modelScaleMultipler, _modelScaleMultipler);
         return weapon;
     }
 }

@@ -65,8 +65,8 @@ ModelImporter:
       name: Shoot Rifle
       takeName: mixamo.com
       internalID: 5321263717679677215
-      firstFrame: 0
-      lastFrame: 10
+      firstFrame: 1
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

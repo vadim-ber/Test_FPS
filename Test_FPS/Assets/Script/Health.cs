@@ -7,9 +7,18 @@ public class Health : MonoBehaviour
     private float _currentHealtValue;
     private bool _isDead;
     public UnityAction OnDie;
+    public UnityAction OnTakeDamage;
     public bool IsDead
     {
         get => _isDead;
+    }
+    public float MaxHealthValue
+    {
+        get => _maxHealthValue;
+    }
+    public float CurrentHealtValue
+    {
+        get => _currentHealtValue;
     }
 
     private void Start()
@@ -25,12 +34,10 @@ public class Health : MonoBehaviour
         }
 
         _currentHealtValue -= damage;
-        print($"{gameObject.name} получил {damage} урона");
-
+        OnTakeDamage?.Invoke();
         if (_currentHealtValue <= 0)
         {
             _isDead = true;
-            print($"{gameObject.name} помер");
             OnDie?.Invoke();
         }
     }

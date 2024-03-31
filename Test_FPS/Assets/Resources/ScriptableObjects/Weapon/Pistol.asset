@@ -15,10 +15,11 @@ MonoBehaviour:
   _name: 
   _WeaponPrefab: {fileID: 1472761627891764337, guid: 9023d1f2f60512d40b0246a869095952, type: 3}
   _shootVFX: {fileID: 4502835693877224, guid: c2cc306486db2a6468d649a504db98db, type: 3}
-  _scaleMultipler: 1
+  _modelScaleMultipler: 0.85
   _animationLayer: 1
   _maxBulletsNumber: 50
   _hpDamagePerShot: 20
-  _shotsPerSecond: 1
+  _secondsBetweenShots: 1
+  _bulletsPerShot: 1
   _recoil: 0.5
   _shootSound: {fileID: 8300000, guid: e60a288c036a4ad4b9c0df6fdd783911, type: 3}

@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 
 public class Aim : MonoBehaviour
@@ -17,6 +18,7 @@ public class Aim : MonoBehaviour
     [SerializeField] private Transform _crossTarget;
     [SerializeField] private List<Weapon> _weapons;
     [SerializeField] private AudioSource _playSound;
+    [SerializeField] private Rig _aimRig;
     private InputAction _aimAction;
     private InputAction _fireAction;
     private InputAction _weapon1Action;
@@ -170,6 +172,7 @@ public class Aim : MonoBehaviour
         _player.SetSensitivity(_aimSensitivity);
         _player.SetRotateOnMove(false);
         _crossTarget.gameObject.SetActive(true);
+        _aimRig.weight = 1f;
 
         Vector3 wolrdAim = hitPoint;
         wolrdAim.y = transform.position.y;
@@ -193,6 +196,7 @@ public class Aim : MonoBehaviour
         _player.SetRotateOnMove(true);
         _player.Animator.SetLayerWeight(_activeWeapon.AnimationLayer, 
             Mathf.Lerp(_player.Animator.GetLayerWeight(_activeWeapon.AnimationLayer), 0f, Time.deltaTime * 10f));
+        _aimRig.weight = 0f;
     }
 
     private void OnDisable()
