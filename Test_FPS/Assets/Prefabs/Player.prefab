@@ -115,7 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weight: 1
   m_Data:
-    m_ConstrainedObject: {fileID: 4204533151527347431}
+    m_ConstrainedObject: {fileID: 0}
     m_SourceObjects:
       m_Length: 1
       m_Item0:
@@ -327,7 +327,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528499870}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 5.799999, z: -10}
+  m_LocalPosition: {x: 4.000005, y: 5.7999973, z: -10.000012}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -398,7 +398,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696681264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5999999, y: 5.799999, z: -4}
+  m_LocalPosition: {x: 1.5999994, y: 5.7999973, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1428,7 +1428,7 @@ GameObject:
   - component: {fileID: 7868147785914138646}
   - component: {fileID: 831078621940173027}
   - component: {fileID: 1223844346}
-  - component: {fileID: 7665197110842306808}
+  - component: {fileID: 5703914178499957810}
   - component: {fileID: 1223844347}
   - component: {fileID: 680231429}
   - component: {fileID: 680231430}
@@ -1507,6 +1507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 1223844347}
+  _health: {fileID: 680231432}
   _moveSpeed: 5
   _sprintSpeed: 10
   _rotationSmoothTime: 0.12
@@ -1526,7 +1527,7 @@ MonoBehaviour:
   _bottomClamp: -30
   _cameraAngleOverride: 0
   _sensitivity: 1
---- !u!114 &7665197110842306808
+--- !u!114 &5703914178499957810
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1535,7 +1536,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4201050852793322155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd73683de1fe804599091ba988c580a, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bdbec9cb8e8ce642bfddf4c1fec3b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 1223844346}

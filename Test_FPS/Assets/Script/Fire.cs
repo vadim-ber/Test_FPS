@@ -3,12 +3,12 @@ using UnityEngine.InputSystem;
 
 public class Fire
 {
-    private Aim _aim;
+    private ShootingSystem _aim;
     private InputAction _action;
     private Transform _previousTransform;
     private Damageable _previousDamageable;
 
-    public Fire(Aim aim, InputAction action)
+    public Fire(ShootingSystem aim, InputAction action)
     {
        _aim = aim;
        _action = action;
@@ -26,7 +26,7 @@ public class Fire
             _aim.PlaySound.clip = _aim.ActiveWeapon.AudioClip;
             int bulletsFire = _aim.ActiveWeapon.CurrentBulletsNumber >= _aim.ActiveWeapon.BulletsPerShot ?
                 _aim.ActiveWeapon.BulletsPerShot : _aim.ActiveWeapon.CurrentBulletsNumber;
-            _aim.ActiveWeapon.SetBulletNumber(-bulletsFire);
+            _aim.ActiveWeapon.SpendBullets(bulletsFire);
             _aim.PlaySound.Play();
             _aim.SetFireTimer(0);
             GameObject.Instantiate(_aim.ActiveWeapon.ShootVFX, _aim.ActiveWeaponModel);
@@ -40,7 +40,11 @@ public class Fire
                     }
                     _previousTransform = hitTransform;
                     _previousDamageable.InflictDamage(_aim.ActiveWeapon.HPDamagePerShot);
-                    GameObject.Instantiate(blood, hitPoint, Quaternion.identity);
+                    if (_aim.Player.Collector != null)
+                    {
+                        _aim.Player.Collector.DamageDone(_aim.ActiveWeapon.HPDamagePerShot);
+                    }                    
+                    GameObject.Instantiate(blood, hitPoint, Quaternion.identity);                    
                 }
                 else
                 {

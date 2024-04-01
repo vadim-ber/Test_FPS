@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private float _damageToPlayerValue = 15f;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Health _health;
     [SerializeField] private Animator _animator;
@@ -50,6 +51,10 @@ public class Enemy : MonoBehaviour
     {
         get => _collider;
     }
+    public float DamageToPlayerValue
+    {
+        get => _damageToPlayerValue;
+    }
 
     private void Awake()
     {
@@ -79,7 +84,11 @@ public class Enemy : MonoBehaviour
         if(random > 1)
         {
             Instantiate(_lootPrefab, transform.position, Quaternion.identity);
-        }       
+        }
+        if (_player.Collector != null)
+        {
+            _player.Collector.EnemyKill();
+        }
     }
 
     private void OnHit()

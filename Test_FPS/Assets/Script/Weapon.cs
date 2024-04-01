@@ -58,14 +58,19 @@ public class Weapon : ScriptableObject
         get => _bulletsPerShot;
     }
 
-    public void SetBulletNumber(int value)
+    public void SpendBullets(int value)
     {
-        _currentBulletsNumber += value;
+        _currentBulletsNumber -= value;
         if(_currentBulletsNumber < 0)
         {
             _currentBulletsNumber = 0;
-        }
-        if(_currentBulletsNumber > _maxBulletsNumber)
+        }        
+    }
+
+    public void AddBullets(int value)
+    {
+        _currentBulletsNumber += value; 
+        if (_currentBulletsNumber > _maxBulletsNumber)
         {
             _currentBulletsNumber = _maxBulletsNumber;
         }

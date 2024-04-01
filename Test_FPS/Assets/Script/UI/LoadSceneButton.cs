@@ -26,6 +26,7 @@ public class LoadSceneButton : MonoBehaviour
     public void LoadTargetScene()
     {
         SceneManager.LoadScene(SceneName);
+        Time.timeScale = 1;
     }
 
     private void OnDestroy()

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public abstract class EnemyState 
 {
@@ -159,18 +158,23 @@ public class EnemyAttack : EnemyState
     {
         CheckSwitchState();
         RotateToPlayer();
-        _currentAttckCoolDown -= Time.deltaTime;
-        if(_currentAttckCoolDown <= 0)
-        {
-            Attack();            
-            _currentAttckCoolDown = _attackCooldown;
-        }        
+        Attack();
     }
 
     private void Attack()
     {
-        var random = Random.Range(1, 2);
-        _enemy.Animator.Play("attack" + random);
+        _currentAttckCoolDown -= Time.deltaTime;
+        if (_currentAttckCoolDown <= 0)
+        {
+            var random = Random.Range(1, 2);
+            _enemy.Animator.Play("attack" + random);
+            _currentAttckCoolDown = _attackCooldown;
+            if (Vector3.Distance(_enemy.transform.position, _enemy.Player.transform.position) <=
+            _enemy.Agent.stoppingDistance)
+            {
+                _enemy.Player.Health.TakeDamage(_enemy.DamageToPlayerValue);
+            }
+        }        
     }
 
     private void RotateToPlayer()

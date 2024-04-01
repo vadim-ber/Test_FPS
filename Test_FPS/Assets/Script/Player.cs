@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private Health _health;
     [SerializeField] private float _moveSpeed = 2.0f;
     [SerializeField] private float _sprintSpeed = 5.335f;
     [SerializeField][Range(0.0f, 0.3f)] private float _rotationSmoothTime = 0.12f;
@@ -51,7 +53,10 @@ public class Player : MonoBehaviour
     private InputAction _sprintAction;
     private const float _threshold = 0.01f;
     private bool _rotateOnMove = true;
+    private bool _isDead = false;
+    private StatisticsCollector _collector;
 
+    public UnityAction OnDie;
     public InputActionAsset InputActionAsset
     {
         get => _inputActionAsset;
@@ -59,6 +64,18 @@ public class Player : MonoBehaviour
     public Animator Animator
     {
         get => _animator;
+    } 
+    public Health Health
+    {
+        get => _health;
+    }
+    public bool IsDead
+    {
+        get => _isDead;  
+    }
+    public StatisticsCollector Collector
+    {
+        get => _collector;
     }
 
     public void SetSensitivity(float sensitivity)
@@ -73,14 +90,14 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        Initialize();
+        Initialize();        
     }
 
     private void Update()
     {
         JumpAndGravity();
         GroundedCheck();
-        Move();
+        Move();        
     }
 
     private void LateUpdate()
@@ -94,6 +111,7 @@ public class Player : MonoBehaviour
         {
             _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         }
+        _collector = FindObjectOfType<StatisticsCollector>();
         _cinemachineTargetYaw = _cinemachineCameraTarget.transform.rotation.eulerAngles.y;
         _controller = GetComponent<CharacterController>();        
         _jumpTimeoutDelta = _jumpTimeout;
@@ -106,6 +124,7 @@ public class Player : MonoBehaviour
         _moveAction.Enable();
         _lookAction.Enable();
         _sprintAction.Enable();
+        _health.OnDie += OnDeath;
         _jumpAction.Enable();
         AssignAnimationIDs();
     }
@@ -128,6 +147,10 @@ public class Player : MonoBehaviour
 
     private void CameraRotation()
     {
+        if (_isDead)
+        {
+            return;
+        }
         Vector2 lookInput = _lookAction.ReadValue<Vector2>();
         if (lookInput.sqrMagnitude >= _threshold)
         {
@@ -144,6 +167,10 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        if (_isDead)
+        {
+            return;
+        }
         Vector2 moveInput = _moveAction.ReadValue<Vector2>();
         float targetSpeed = _sprintAction.ReadValue<float>() > 0 ? _sprintSpeed : _moveSpeed;
         if (moveInput == Vector2.zero) targetSpeed = 0.0f;
@@ -184,6 +211,10 @@ public class Player : MonoBehaviour
 
     private void JumpAndGravity()
     {
+        if (_isDead)
+        {
+            return;
+        }
         if (_grounded)
         {
             _fallTimeoutDelta = _fallTimeout;
@@ -235,13 +266,24 @@ public class Player : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Color transparentGreen = new Color(0.0f, 1.0f, 0.0f, 0.35f);
-        Color transparentRed = new Color(1.0f, 0.0f, 0.0f, 0.35f);
+        Color transparentGreen = new(0.0f, 1.0f, 0.0f, 0.35f);
+        Color transparentRed = new(1.0f, 0.0f, 0.0f, 0.35f);
 
         if (_grounded) Gizmos.color = transparentGreen;
         else Gizmos.color = transparentRed;
 
         Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - _groundedOffset, transform.position.z), _groundedRadius);
+    }
+
+    private void OnDeath()
+    {
+        _isDead = true;
+        _animator.SetLayerWeight(6, 1.0f);
+        OnDie?.Invoke();
+        if(_collector != null)
+        {
+            _collector.Deaths();
+        }
     }
 
     private void OnDisable()
@@ -250,5 +292,6 @@ public class Player : MonoBehaviour
         _lookAction.Disable();
         _sprintAction.Disable();
         _jumpAction.Disable();
+        _health.OnDie -= OnDeath;
     }
 }
